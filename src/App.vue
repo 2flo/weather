@@ -1,6 +1,7 @@
 <template>
   <div id="app">
      <weather></weather>
+
   </div>
 </template>
 
@@ -14,4 +15,5 @@ export default {
   }
 }
 </script>
+
 

@@ -1,10 +1,20 @@
 <template>
     <div class="weather">
-        <h2>La météo de votre ville</h2>
-        City: <span v-if="info">{{info.city.name}}</span>
-        <img :src="img_weather" alt="">
-        <span v-if="info">{{info.list[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 21].main.temp}}</span>
-        <span v-in="info">{{info.list[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31].weather[0].description}}</span>
+        <div class="weatherbloc">
+        City: <span v-if="info">{{info.name}}</span>
+        <span><img :src="img_weather" alt="" width="150" height="150"></span>
+        <span v-if="info">{{info.main.temp}}</span>
+        <span v-if="info">{{info.weather[0].description}}</span>
+    </div>
+  <div class="weatherbloc">
+        City: <span v-if="info">{{info.name}}</span>
+        <span><img :src="img_weather" alt="" width="150" height="150"></span>
+        <span v-if="infoNext">{{infoNext.list[8].main.temp}}</span>
+        <span v-if="infoNext">{{infoNext.list[8].weather[0].description}}</span>
+    </div>
+
+
+
     </div>
 </template>
 
@@ -17,32 +27,41 @@ export default {
     data: function()
     { return {
 
-        info: null
-    }
+        info: null,
+        infoNext: null,
+        main: null,
+        mainnext: null,
+    };
     },
     computed: {
         img_weather: function(){
-            return this.info ? "https://openweathermap.org/img/wn/"+this.info.list[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 ,31].weather[0].icon +"@2x.png" : ""
+            return this.info ? "https://openweathermap.org/img/wn/" + this.info.weather[0].icon + "@2x.png" : "";
         }
     },
     created() {
         axios
+            .get("https://api.openweathermap.org/data/2.5/weather?q=London&units=metric&APPID=652be37c6135ed27ef8faa0d818e900c")
+            .then(response=>(this.info = response.data) + (this.main = response.data))
+        axios
             .get("http://api.openweathermap.org/data/2.5/forecast?q=London&units=metric&UK&APPID=652be37c6135ed27ef8faa0d818e900c")
-            .then(response=>(this.info=response.data))
+            .then(response=>(this.infoNext=response.data) + (this.mainnext=response.data))
     }
 }
 </script>
 
 <style>
-.weather{
+.weatherbloc{
     display: flex;
     flex-direction: column;
     text-align: center;
+    border: 1px solid black;
+    padding: 15px;
+    width: 25vw;
 }
-
-img{
-    width: 40%;
-    height: 300px;
+.img_weather{
+    margin-left: 100px;
+}
+template{
     margin-left: 430px;
 }
 </style>
